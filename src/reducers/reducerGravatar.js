@@ -1,4 +1,4 @@
-import { REQUEST_DATA, RECEIVE_DATA, FAIL_DATA, LOGIN_REQUEST } from '../actions/index';
+import { LOGIN_REQUEST } from '../actions/index';
 
 const initialState = {
   email: '',

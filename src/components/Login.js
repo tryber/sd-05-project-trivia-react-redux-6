@@ -1,8 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { loginRequest } from '../actions/index';
 import md5  from 'crypto-js/md5';
-import triviaAPI from '../services/triviaAPI';
+import { connect } from 'react-redux';
+import { loginRequest, fetchToken, fetchQuestions } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,10 +12,18 @@ class Login extends React.Component {
       hash: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const { login, testeToken, token, setAPIToken } = this.props;
+    const { email, name, hash } = this.state;
+    login(email, name, hash);
+    testeToken();
+    setAPIToken(token); // Colocar em outro componente
   }
 
   handleChange(e) {
-    triviaAPI();
     const { id, value } = e.target;
     this.setState({
       [id]: value,
@@ -28,23 +35,30 @@ class Login extends React.Component {
   }
 
   render() {
-    const { login } = this.props;
-    const { email, name, hash } = this.state;
+    const { token, setAPIToken } = this.props;
+    console.log(token);
     return (
       <div>
         <label htmlFor="email">Email do Gravatar:</label>
         <input data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange} />
         <label htmlFor="name">Nome do Jogador:</label>
         <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
-        <button data-testid="btn-play" type="button" onClick={() => {login(email, name, hash)}}>JOGAR!</button>
+        <button data-testid="btn-play" type="button" onClick={this.handleClick}>JOGAR!</button>
         {/* {hash !== '' ? <img src={`https://www.gravatar.com/avatar/${hash}`} /> : false} */}
+        {/* <button onClick={() => setAPIToken(token)}>Teste</button> */}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  login: (email, name, hash) => dispatch(loginRequest(email, name, hash))
+const mapStateToProps = (state) => ({
+  token: state.reducerTrivia.token,
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapDispatchToProps = (dispatch) => ({
+  login: (email, name, hash) => dispatch(loginRequest(email, name, hash)),
+  testeToken: () => dispatch(fetchToken()),
+  setAPIToken: (token) => dispatch(fetchQuestions(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

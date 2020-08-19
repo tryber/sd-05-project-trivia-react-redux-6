@@ -1,6 +1,15 @@
-export default function triviaAPI() {
+export function getTokenTriviaAPI() {
   const URL = 'https://opentdb.com/api_token.php?command=request';
-  fetch(URL)
+  return fetch(URL)
     .then((response) => response.json())
-    .then((data) => console.log(data))
+    .then((data) => data.token);
+}
+
+export async function getQuestionsAPI(token) {
+  const URL_TOKEN = `https://opentdb.com/api.php?amount=5&token=${token}`;
+  return fetch(URL_TOKEN)
+    .then((response) => response.json())
+//     .then((data) => objectAPI['results'] = data.results);
+//   console.log('obj', objectAPI)
+//   return objectAPI;
 }
