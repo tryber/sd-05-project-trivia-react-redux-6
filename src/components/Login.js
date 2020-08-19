@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { loginRequest } from '../actions/index';
 import md5  from 'crypto-js/md5';
-import gravatarAPI from '../services/gravatarAPI';
+import triviaAPI from '../services/triviaAPI';
 
 class Login extends React.Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class Login extends React.Component {
   }
 
   handleChange(e) {
+    triviaAPI();
     const { id, value } = e.target;
     this.setState({
       [id]: value,
@@ -35,8 +36,8 @@ class Login extends React.Component {
         <input data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange} />
         <label htmlFor="name">Nome do Jogador:</label>
         <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
-        <button data-testid="btn-play" type="button" onClick={() => {login(email, name, hash); gravatarAPI(hash);}}>JOGAR!</button>
-        {hash !== '' ? <img src={`https://www.gravatar.com/avatar/${hash}`} /> : false}
+        <button data-testid="btn-play" type="button" onClick={() => {login(email, name, hash)}}>JOGAR!</button>
+        {/* {hash !== '' ? <img src={`https://www.gravatar.com/avatar/${hash}`} /> : false} */}
       </div>
     );
   }
