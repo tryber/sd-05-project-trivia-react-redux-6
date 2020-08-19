@@ -1,15 +1,19 @@
-import { REQUEST_DATA, RECEIVE_DATA, FAIL_DATA } from '../actions/index';
+import { REQUEST_DATA, RECEIVE_DATA, FAIL_DATA, LOGIN_REQUEST } from '../actions/index';
 
 const initialState = {
-  payload: 'grupo legal'
+  email: '',
+  name: '',
+  hash: '',
 }
 
 export default function reducerGravatar(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_DATA:
+    case LOGIN_REQUEST:
       return {
         ...state,
-        payload: action.payload,
+        email: action.email,
+        name: action.name,
+        hash: action.hash,
       };
     default:
       return state;
