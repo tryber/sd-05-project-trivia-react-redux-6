@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import propTypes from 'prop-types';
 import './header.css';
 
 function HEADER(props) {
@@ -26,3 +27,8 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps)(HEADER);
+
+HEADER.propTypes = {
+  hash: propTypes.string.isRequired,
+  name: propTypes.string.isRequired,
+}
