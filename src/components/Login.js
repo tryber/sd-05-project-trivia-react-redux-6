@@ -1,10 +1,10 @@
 import React from 'react';
-import md5  from 'crypto-js/md5';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import propTypes from 'prop-types';
 import { loginRequest, fetchToken, fetchQuestions } from '../actions/index';
 import logo from '../trivia.png';
-import { Link } from 'react-router-dom';
-// import logo from './trivia.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -39,9 +39,9 @@ class Login extends React.Component {
 
   render() {
     const { token, setAPIToken } = this.props;
-    console.log(token);
     return (
       <div className="App">
+        <Link to="/feedback">Feedback</Link>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
@@ -52,7 +52,6 @@ class Login extends React.Component {
             <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
             <button data-testid="btn-play" type="button" onClick={this.handleClick}>JOGAR!</button>
             <button onClick={() => setAPIToken(token)}>Teste</button>
-            <Link to="/feedback">Feedback</Link>
           </div>
         </header>
       </div>
@@ -71,3 +70,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  token: propTypes.string.isRequired,
+  login: propTypes.objectOf(propTypes.string).isRequired,
+  testeToken: propTypes.func.isRequired,
+  setAPIToken: propTypes.func.isRequired,
+}
