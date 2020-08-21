@@ -1,8 +1,10 @@
 import React from 'react';
-import md5  from 'crypto-js/md5';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import { Redirect, Link } from 'react-router-dom';
+import propTypes from 'prop-types';
 import { loginRequest, fetchToken } from '../actions/index';
-import { Redirect } from 'react-router-dom';
+import logo from '../trivia.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -39,15 +41,23 @@ class Login extends React.Component {
   }
 
   render() {
+    const { token, setAPIToken } = this.props;
     const { redirect } = this.state;
     if (redirect) return <Redirect to="/game" />;
     return (
-      <div>
-        <label htmlFor="email">Email do Gravatar:</label>
-        <input data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange} />
-        <label htmlFor="name">Nome do Jogador:</label>
-        <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
-        <button data-testid="btn-play" type="button" onClick={this.handleClick}>JOGAR!</button>
+      <div className="App">
+        <Link to="/feedback">Feedback</Link>
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>SUA VEZ</p>
+          <div>
+            <label htmlFor="email">Email do Gravatar:</label>
+            <input data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange} />
+            <label htmlFor="name">Nome do Jogador:</label>
+            <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
+            <button data-testid="btn-play" type="button" onClick={this.handleClick}>JOGAR!</button>
+          </div>
+        </header>
       </div>
     );
   }
@@ -59,3 +69,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  login: propTypes.objectOf(propTypes.string).isRequired,
+  getToken: propTypes.func.isRequired,
+}
