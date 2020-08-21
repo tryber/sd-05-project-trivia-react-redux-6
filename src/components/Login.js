@@ -47,7 +47,7 @@ class Login extends React.Component {
       <div className="App">
         <Link to="/feedback">Feedback</Link>
         <header className="App-header">
-          <a href="#" data-testid="btn-settings"><img src={img_settings} className="icon_settings" /></a>
+          <Link to="/settings" data-testid="btn-settings"><img src={img_settings} className="icon_settings" /></Link>
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <div>
