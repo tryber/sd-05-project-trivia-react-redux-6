@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   loading: true,
   results: [],
   error: '',
-  token: '',
+  token: '06493ff94c7f3dcc304f79c66e7e3bedaa99fca24f808eff1556f3fcf45832e5', // voltar pra vazio depois
 };
 
 export default function reducerTrivia(state = INITIAL_STATE, action) {
