@@ -5,6 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { loginRequest, fetchToken } from '../actions/index';
 import logo from '../trivia.png';
+import img_settings from '../image/gear.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -22,6 +23,8 @@ class Login extends React.Component {
   handleClick() {
     const { login, getToken } = this.props;
     const { email, name, hash } = this.state;
+    console.log(email);
+    console.log(name)
     login(email, name, hash);
     getToken();
     this.setState({
@@ -42,13 +45,14 @@ class Login extends React.Component {
 
   render() {
     const { token, setAPIToken } = this.props;
-    const { redirect } = this.state;
+    const { name, email, redirect } = this.state;
     if (redirect) return <Redirect to="/game" />;
     return (
       <div className="App">
         <Link to="/feedback">Feedback</Link>
         <Link to="/ranking">Ranking</Link>
         <header className="App-header">
+          <Link to="/settings" data-testid="btn-settings"><img src={img_settings} className="icon_settings" /></Link>
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <div>
@@ -56,7 +60,7 @@ class Login extends React.Component {
             <input data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange} />
             <label htmlFor="name">Nome do Jogador:</label>
             <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
-            <button data-testid="btn-play" type="button" onClick={this.handleClick}>JOGAR!</button>
+            <button data-testid="btn-play" type="button" disabled={!(name && email)} onClick={this.handleClick}>JOGAR!</button>
           </div>
         </header>
       </div>
