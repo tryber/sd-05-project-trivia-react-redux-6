@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+// import Header from './Header';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../actions/index';
@@ -19,26 +19,53 @@ class Game extends React.Component {
     this.next = this.next.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.updateQuestions = this.updateQuestions.bind(this);
+    this.timer = this.timer.bind(this);
   }
+
   componentDidMount() {
     const { token, fetchPerguntas } = this.props;
     fetchPerguntas(token);
+    this.timer();
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { indexResults, questions } = this.state;
-    if (indexResults !== 5) {
+    const { results } = this.props;
+    if (indexResults !== results.length) {
       if (prevState.indexResults !== indexResults || questions.length === 0) {
         this.updateQuestions();
       }
     }
   }
 
-  updateQuestions() {
-    this.setState({
-      questions: this.randomicChoices(),
-    });
+  componentWillUnmount() {
+    this.unmountInterval();
   }
+
+  timer() {
+    this.myInterval = setInterval(() => {
+      const { tempo } = this.state;
+      if (tempo === 1) {
+        console.log('tempo', tempo);
+        this.unmountInterval();
+      }
+      this.setState({ tempo: tempo - 1 });
+    }, 1000);
+  }
+
+  unmountInterval() {
+    clearInterval(this.myInterval);
+  }
+
+  updateQuestions() {
+    const { results } = this.props;
+    if (results !== undefined) {
+      this.setState({
+        questions: this.randomicChoices(),
+      });
+    }
+  }
+
   randomicChoices() {
     const { indexResults } = this.state;
     const { type } = this.props.results[indexResults];
@@ -54,7 +81,9 @@ class Game extends React.Component {
 
   next() {
     const { indexResults } = this.state;
-    if (indexResults === 4) {
+    const { results } = this.props;
+
+    if (indexResults === results.length - 1) {
       this.setState({
         redirect: true,
       });
@@ -71,7 +100,9 @@ class Game extends React.Component {
     this.setState({
       buttonsDisabled: !buttonsDisabled,
     });
+    this.unmountInterval();
   }
+
   renderQuestions() {
     const { results } = this.props;
     const { questions, buttonsDisabled, indexResults } = this.state;
@@ -101,7 +132,7 @@ class Game extends React.Component {
 
   render() {
     const { results, loading } = this.props;
-    const { indexResults, redirect } = this.state;
+    const { indexResults, redirect, tempo } = this.state;
     if (redirect) return (<Redirect to="/" />); //  mudar para feedback quando tiver ela pronta.
     if (loading) return (<div>Loading...</div>);
     const { category, question } = results[indexResults];
@@ -121,7 +152,7 @@ class Game extends React.Component {
             </div>
           </div>
           <div className="timeAndNext">
-            <div className="timer">Tempo: </div>
+            <div className="timer">Tempo: {tempo} </div>
             <div className="next">
               <button onClick={this.next} data-testid="btn-next">Próxima</button>
             </div>
@@ -144,3 +175,6 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 //  ref1: https://teamtreehouse.com/community/return-mathrandom05
+//  https://medium.com/better-programming/building-a-simple-countdown-timer-with-react-4ca32763dda7
+//  https://www.youtube.com/watch?v=NAx76xx40jM
+//  https://www.w3schools.com/jsref/met_win_setinterval.asp
