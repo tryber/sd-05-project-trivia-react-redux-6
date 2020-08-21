@@ -40,7 +40,7 @@ export function fetchToken() {
     return getTokenTriviaAPI()
       .then((token) => dispatch(receiveToken(token)));
   };
-};
+}
 
 export function fetchQuestions(token) {
   return (dispatch) => {
@@ -51,4 +51,4 @@ export function fetchQuestions(token) {
         (error) => dispatch(failData(error)),
       );
   };
-};
+}
