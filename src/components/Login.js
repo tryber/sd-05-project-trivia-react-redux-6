@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { loginRequest, fetchToken, fetchQuestions } from '../actions/index';
 import logo from '../trivia.png';
+import img_settings from '../image/gear.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class Login extends React.Component {
       <div className="App">
         <Link to="/feedback">Feedback</Link>
         <header className="App-header">
+          <a href="#"><img src={img_settings} className="icon_settings" /></a>
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <div>
