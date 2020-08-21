@@ -47,6 +47,7 @@ class Login extends React.Component {
     return (
       <div className="App">
         <Link to="/feedback">Feedback</Link>
+        <Link to="/ranking">Ranking</Link>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
