@@ -25,7 +25,7 @@ class Game extends React.Component {
   componentDidMount() {
     const { token, fetchPerguntas } = this.props;
     fetchPerguntas(token);
-    this.timer();
+    // this.timer();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -43,10 +43,10 @@ class Game extends React.Component {
   }
 
   timer() {
+    //  ref2
     this.myInterval = setInterval(() => {
       const { tempo } = this.state;
       if (tempo === 1) {
-        console.log('tempo', tempo);
         this.unmountInterval();
       }
       this.setState({ tempo: tempo - 1 });
@@ -55,6 +55,7 @@ class Game extends React.Component {
 
   unmountInterval() {
     clearInterval(this.myInterval);
+    this.setState({ buttonsDisabled: true });
   }
 
   updateQuestions() {
@@ -62,8 +63,10 @@ class Game extends React.Component {
     if (results !== undefined) {
       this.setState({
         questions: this.randomicChoices(),
+        tempo: 30,
       });
     }
+    this.timer();
   }
 
   randomicChoices() {
@@ -83,20 +86,22 @@ class Game extends React.Component {
     const { indexResults } = this.state;
     const { results } = this.props;
 
+    this.setState({
+      indexResults: indexResults + 1,
+      buttonsDisabled: false,
+    });
+
     if (indexResults === results.length - 1) {
       this.setState({
         redirect: true,
       });
     }
-    this.setState({
-      indexResults: indexResults + 1,
-      buttonsDisabled: false,
-    });
   }
 
   handleClick(event) {
-    const { buttonsDisabled } = this.state;
+    const { buttonsDisabled, tempo } = this.state;
     console.log('estou dentro do handleClick', event.target.innerHTML);
+    console.log('tempo no handleclick', tempo);
     this.setState({
       buttonsDisabled: !buttonsDisabled,
     });
@@ -175,6 +180,6 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 //  ref1: https://teamtreehouse.com/community/return-mathrandom05
-//  https://medium.com/better-programming/building-a-simple-countdown-timer-with-react-4ca32763dda7
-//  https://www.youtube.com/watch?v=NAx76xx40jM
-//  https://www.w3schools.com/jsref/met_win_setinterval.asp
+//  ref2: https://medium.com/better-programming/building-a-simple-countdown-timer-with-react-4ca32763dda7
+//  ref2: https://www.youtube.com/watch?v=NAx76xx40jM
+//  ref2: https://www.w3schools.com/jsref/met_win_setinterval.asp
