@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../actions/index';
 import './Game.css';
@@ -9,79 +10,98 @@ class Game extends React.Component {
     this.state = {
       buttonsDisabled: false,
       indexResults: 0,
-      answered: false,
       tempo: 30,
+      redirect: false,
+      questions: [],
     };
+
     this.next = this.next.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.updateQuestions = this.updateQuestions.bind(this);
   }
   componentDidMount() {
     const { token, fetchPerguntas } = this.props;
     fetchPerguntas(token);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { indexResults, questions } = this.state;
+    if (indexResults !== 5) {
+      if (prevState.indexResults !== indexResults || questions.length === 0) {
+        this.updateQuestions();
+      }
+    }
+  }
+
+  updateQuestions() {
+    this.setState({
+      questions: this.randomicChoices(),
+    });
+  }
   randomicChoices() {
     const { indexResults } = this.state;
-    const { correct_answer, incorrect_answers, type } = this.props.results[indexResults];
+    const { type } = this.props.results[indexResults];
     let arrayRandomico;
     if (type === 'boolean') {
-      arrayRandomico = [ 'True', 'False' ];
+      arrayRandomico = ['True', 'False'];
     } else {
-      console.log('incorrect answer pra nao booleano', incorrect_answers);
-      arrayRandomico = [ correct_answer, ...incorrect_answers ];
+      arrayRandomico = [this.props.results[indexResults].correct_answer,
+        ...this.props.results[indexResults].incorrect_answers];
     }
     return arrayRandomico.sort(() => Math.random() - 0.5); // ref1
   }
 
   next() {
     const { indexResults } = this.state;
-    console.log(indexResults);
+    if (indexResults === 4) {
+      this.setState({
+        redirect: true,
+      });
+    }
     this.setState({
       indexResults: indexResults + 1,
+      buttonsDisabled: false,
     });
   }
 
   handleClick(event) {
     const { buttonsDisabled } = this.state;
     console.log('estou dentro do handleClick', event.target.innerHTML);
-    // if (this.state.clicked) {
-    //   //  não deixar clicar em outro botão das alternativas
-    // }
     this.setState({
       buttonsDisabled: !buttonsDisabled,
     });
-    console.log('q loucura');
   }
+
 
   render() {
     const { results, loading } = this.props;
-    const { indexResults } = this.state;
+    const { indexResults, redirect, buttonsDisabled, questions } = this.state;
+    if (redirect) return (<Redirect to="/" />); //  mudar para feedback quando tiver ela pronta.
     if (loading) return (<div>Loading...</div>);
-    const { category, question, correct_answer, incorrect_answers } = results[indexResults];
-    const arrayRandomico = this.randomicChoices();
-    console.log('a correta eh', correct_answer, typeof(correct_answer));
-    console.log('o array Randomico eh', arrayRandomico);
+    const { category, question, correct_answer } = results[indexResults];
 
     return (
       <div className="gameScreen">
         <h4>Game Screen</h4>
-          <div className="cardQuestion">
-            <div className="questionAndAnswers">
-              <div className="containerCategoryQuestion">
-                <div className="question-category" data-testid="question-category">{category}</div>
-                <p className="question-text" data-testid="question-text">{question}</p>
-              </div>
-              <div className="answers">
-                {/* <button data-testid="correct-answer">{correct_answer}</ button>
-                {(incorrect_answers.length > 1) ? incorrect_answers.map((incorrect, index) => (<button key={incorrect} data-testid={`wrong-answer-${index}`} >{incorrect}</button>)) : <button data-testid={`wrong-answer-0`}>{incorrect_answers}</button>} */}
-                {arrayRandomico.map((item, index) => (item === correct_answer) ? (<button key={item} data-testid="correct-answer" onClick={this.handleClick}>{item}</ button>) : (<button key={item} data-testid={`wrong-answer-${index}`} onClick={this.handleClick}>{item}</button>) )}
-              </div>
+        <div className="cardQuestion">
+          <div className="questionAndAnswers">
+            <div className="containerCategoryQuestion">
+              <div className="question-category" data-testid="question-category">{category}</div>
+              <p className="question-text" data-testid="question-text">{question}</p>
             </div>
-            <div className="timeAndNext">
-              <div className="timer">Tempo: </div>
-              <div className="next"><button onClick={this.next} data-testid="btn-next">Próxima</button></div>
+            <div className="answers">
+              {questions.map((item, index) => (item === correct_answer) ?
+               (<button key={item} className={(buttonsDisabled === true) ? 'correctAnswer' : null } data-testid="correct-answer"
+                onClick={this.handleClick} disabled={buttonsDisabled}>{item}</ button>) :
+                (<button key={item} className={(buttonsDisabled === true) ? 'wrongAnswer' : null } data-testid={`wrong-answer-${index}`}
+                onClick={this.handleClick} disabled={buttonsDisabled}>{item}</button>))}
             </div>
           </div>
+          <div className="timeAndNext">
+            <div className="timer">Tempo: </div>
+            <div className="next"><button onClick={this.next} data-testid="btn-next">Próxima</button></div>
+          </div>
+        </div>
       </div>
     );
   }
