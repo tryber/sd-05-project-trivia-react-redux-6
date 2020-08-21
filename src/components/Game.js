@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './Header';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../actions/index';
@@ -109,6 +110,7 @@ class Game extends React.Component {
       <div className="gameScreen">
         <h4>Game Screen</h4>
         <div className="cardQuestion">
+          {/* <Header /> */}
           <div className="questionAndAnswers">
             <div className="containerCategoryQuestion">
               <div className="question-category" data-testid="question-category">{category}</div>
