@@ -71,14 +71,39 @@ class Game extends React.Component {
       buttonsDisabled: !buttonsDisabled,
     });
   }
+  renderQuestions() {
+    const { results } = this.props;
+    const { questions, buttonsDisabled, indexResults } = this.state;
 
+    return questions.map((item, index) => {
+      if (item === results[indexResults].correct_answer) {
+        return (
+          <button
+            key={item} className={(buttonsDisabled === true) ? 'correctAnswer' : null} data-testid="correct-answer"
+            onClick={this.handleClick} disabled={buttonsDisabled}
+          >
+            {item}
+          </button>
+        );
+      }
+      return (
+        <button
+          key={item} className={(buttonsDisabled === true) ? 'wrongAnswer' : null}
+          data-testid={`wrong-answer-${index}`}
+          onClick={this.handleClick} disabled={buttonsDisabled}
+        >
+          {item}
+        </button>
+      );
+    });
+  }
 
   render() {
     const { results, loading } = this.props;
-    const { indexResults, redirect, buttonsDisabled, questions } = this.state;
+    const { indexResults, redirect } = this.state;
     if (redirect) return (<Redirect to="/" />); //  mudar para feedback quando tiver ela pronta.
     if (loading) return (<div>Loading...</div>);
-    const { category, question, correct_answer } = results[indexResults];
+    const { category, question } = results[indexResults];
 
     return (
       <div className="gameScreen">
@@ -90,16 +115,14 @@ class Game extends React.Component {
               <p className="question-text" data-testid="question-text">{question}</p>
             </div>
             <div className="answers">
-              {questions.map((item, index) => (item === correct_answer) ?
-               (<button key={item} className={(buttonsDisabled === true) ? 'correctAnswer' : null } data-testid="correct-answer"
-                onClick={this.handleClick} disabled={buttonsDisabled}>{item}</ button>) :
-                (<button key={item} className={(buttonsDisabled === true) ? 'wrongAnswer' : null } data-testid={`wrong-answer-${index}`}
-                onClick={this.handleClick} disabled={buttonsDisabled}>{item}</button>))}
+              {this.renderQuestions()}
             </div>
           </div>
           <div className="timeAndNext">
             <div className="timer">Tempo: </div>
-            <div className="next"><button onClick={this.next} data-testid="btn-next">Próxima</button></div>
+            <div className="next">
+              <button onClick={this.next} data-testid="btn-next">Próxima</button>
+            </div>
           </div>
         </div>
       </div>
