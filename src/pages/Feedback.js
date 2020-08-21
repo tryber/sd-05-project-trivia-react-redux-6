@@ -7,7 +7,7 @@ import Header from '../components/Header';
 class Feedback extends React.Component {
   render() {
     // const { acertos, score } = this.props;
-    const acertos = 3; // acertos virá como props do redux.
+    const acertos = 2; // acertos virá como props do redux.
     return (
       <div>
         <Header />
