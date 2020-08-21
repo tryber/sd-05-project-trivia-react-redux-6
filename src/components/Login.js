@@ -22,6 +22,8 @@ class Login extends React.Component {
   handleClick() {
     const { login, testeToken, token, setAPIToken } = this.props;
     const { email, name, hash } = this.state;
+    console.log(email);
+    console.log(name)
     login(email, name, hash);
     testeToken();
     // setAPIToken(token); // Colocar em outro componente
@@ -40,11 +42,12 @@ class Login extends React.Component {
 
   render() {
     const { token, setAPIToken } = this.props;
+    const { name, email } = this.state;
     return (
       <div className="App">
         <Link to="/feedback">Feedback</Link>
         <header className="App-header">
-          <a href="#"><img src={img_settings} className="icon_settings" /></a>
+          <a href="#" data-testid="btn-settings"><img src={img_settings} className="icon_settings" /></a>
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <div>
@@ -52,7 +55,7 @@ class Login extends React.Component {
             <input data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange} />
             <label htmlFor="name">Nome do Jogador:</label>
             <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
-            <button data-testid="btn-play" type="button" onClick={this.handleClick}>JOGAR!</button>
+            <button data-testid="btn-play" type="button" disabled={!(name && email)} onClick={this.handleClick}>JOGAR!</button>
             <button onClick={() => setAPIToken(token)}>Teste</button>
           </div>
         </header>
