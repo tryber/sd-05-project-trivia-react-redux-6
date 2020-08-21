@@ -1,16 +1,15 @@
 :root {
-  --background-primary-gray: #C4C4C4;
+  --color-primary-gray: #c4c4c4;
   margin: 0;
   padding: 0;
 }
 
 .game-header {
   align-items: center;
-  background-color: var(--background-primary-gray);
+  background: var(--color-primary-gray);
   display: flex;
   height: 15vh;
   justify-content: space-around;
-  position: absolute;
   width: 100%;
 }
 
@@ -19,7 +18,7 @@
   box-sizing: border-box;
   display: flex;
   flex-grow: 2;
-  justify-content: left;
+  justify-content: flex-start;
   padding: 1em;
 }
 
@@ -33,4 +32,9 @@
 .game-header .right-header {
   min-width: 10%;
   padding: 1em;
+}
+
+.icon_settings {
+  
+  width: 30px;
 }
