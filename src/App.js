@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom';
+import Game from './components/Game';
 import Feedback from './pages/Feedback';
 import Login from './components/Login';
 import Ranking from './pages/Ranking';
