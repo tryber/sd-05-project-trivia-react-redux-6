@@ -185,9 +185,7 @@ class Game extends React.Component {
               <div className="question-category" data-testid="question-category">{category}</div>
               <p className="question-text" data-testid="question-text">{question}</p>
             </div>
-            <div className="answers">
-              {this.renderQuestions()}
-            </div>
+            <div className="answers">{this.renderQuestions()}</div>
           </div>
           <div className="timeAndNext">
             <div className="timer">Tempo: {tempo} </div>
