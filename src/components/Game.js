@@ -29,7 +29,7 @@ class Game extends React.Component {
   componentDidMount() {
     const { token, fetchPerguntas } = this.props;
     fetchPerguntas(token);
-    localStorage.setItem('state', JSON.stringify({ player: { score: 0, assertions: 0 }}));
+    localStorage.setItem('state', JSON.stringify({ player: { score: 0, assertions: 0 } }));
     // this.timer();
   }
 
@@ -45,17 +45,6 @@ class Game extends React.Component {
 
   componentWillUnmount() {
     this.unmountInterval();
-  }
-
-  timer() {
-    //  ref2
-    this.myInterval = setInterval(() => {
-      const { tempo } = this.state;
-      if (tempo === 1) {
-        this.unmountInterval();
-      }
-      this.setState({ tempo: tempo - 1 });
-    }, 1000);
   }
 
   unmountInterval() {
@@ -130,6 +119,17 @@ class Game extends React.Component {
       gravatarEmail: email,
     };
     localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
+  timer() {
+    //  ref2
+    this.myInterval = setInterval(() => {
+      const { tempo } = this.state;
+      if (tempo === 1) {
+        this.unmountInterval();
+      }
+      this.setState({ tempo: tempo - 1 });
+    }, 1000);
   }
 
   calculateScore() {
@@ -224,7 +224,7 @@ Game.propTypes = {
   email: propTypes.string.isRequired,
   loading: propTypes.bool.isRequired,
   token: propTypes.string.isRequired,
-  results: propTypes.arrayOf(propTypes.instanceOf(Object)),
+  results: propTypes.arrayOf(propTypes.instanceOf(Object)).isRequired,
   prevAssertions: propTypes.number.isRequired,
   prevScore: propTypes.number.isRequired,
   fetchPerguntas: propTypes.func.isRequired,

@@ -40,6 +40,7 @@ export const receiveToken = (token) => ({
 
 export function fetchToken() {
   return (dispatch) => {
+    dispatch(requestData());
     return getTokenTriviaAPI()
       .then((token) => dispatch(receiveToken(token)));
   };

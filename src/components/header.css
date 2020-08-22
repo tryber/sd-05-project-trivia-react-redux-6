@@ -1,6 +1,4 @@
 :root {
-  
-  --color-primary-gray: #c4c4c4;
   font-size: 18px;
   margin: 0;
   padding: 0;
@@ -8,7 +6,7 @@
 
 .game-header {
   align-items: center;
-  background: var(--color-primary-gray);
+  background: #c4c4c4;
   display: flex;
   font-size: 0.8rem;
   height: 5vh;
