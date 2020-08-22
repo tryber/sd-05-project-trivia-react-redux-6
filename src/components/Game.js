@@ -1,8 +1,8 @@
 import React from 'react';
-// import Header from './Header';
+import Header from './Header';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../actions/index';
+import { fetchQuestions, scorePoint } from '../actions/index';
 import './Game.css';
 
 class Game extends React.Component {
@@ -14,17 +14,21 @@ class Game extends React.Component {
       tempo: 30,
       redirect: false,
       questions: [],
+      visibility: 'hidden',
     };
 
     this.next = this.next.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.updateQuestions = this.updateQuestions.bind(this);
     this.timer = this.timer.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
+    this.setStorageValue = this.setStorageValue.bind(this);
   }
 
   componentDidMount() {
     const { token, fetchPerguntas } = this.props;
     fetchPerguntas(token);
+    localStorage.setItem('state', JSON.stringify({ player: {score: 0, asssertions: 0}}))
     // this.timer();
   }
 
@@ -99,13 +103,43 @@ class Game extends React.Component {
   }
 
   handleClick(event) {
-    const { buttonsDisabled, tempo } = this.state;
-    console.log('estou dentro do handleClick', event.target.innerHTML);
-    console.log('tempo no handleclick', tempo);
+    const { buttonsDisabled } = this.state;
+    const { testePoint, prevAssertions, prevScore } = this.props;
+    let point;
+    if (event.target.name === 'correct-answer') {
+      point = this.calculateScore();
+      testePoint((prevAssertions + 1), (prevScore + point));
+      this.setStorageValue((prevAssertions + 1), (prevScore + point));
+    }
+
     this.setState({
       buttonsDisabled: !buttonsDisabled,
+      visibility: 'visible',
     });
+
     this.unmountInterval();
+  }
+
+  setStorageValue(acertos, placar) {
+    const { name, email } = this.props;
+    const player = {
+      name: name,
+      assertions: acertos,
+      score: placar,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('state', JSON.stringify({ player: player }));
+  }
+
+  calculateScore() {
+    const { results } = this.props;
+    const { indexResults, tempo } = this.state;
+    let difficultyValue;
+    if (results[indexResults].difficulty === 'hard') difficultyValue = 3;
+    if (results[indexResults].difficulty === 'medium') difficultyValue = 2;
+    if (results[indexResults].difficulty === 'easy') difficultyValue = 1;
+    const point = 10 + (tempo * difficultyValue );
+    return point;
   }
 
   renderQuestions() {
@@ -116,7 +150,7 @@ class Game extends React.Component {
       if (item === results[indexResults].correct_answer) {
         return (
           <button
-            key={item} className={(buttonsDisabled === true) ? 'correctAnswer' : null} data-testid="correct-answer"
+            key={item} className={(buttonsDisabled === true) ? 'correctAnswer' : null} data-testid="correct-answer" name="correct-answer"
             onClick={this.handleClick} disabled={buttonsDisabled}
           >
             {item}
@@ -126,7 +160,7 @@ class Game extends React.Component {
       return (
         <button
           key={item} className={(buttonsDisabled === true) ? 'wrongAnswer' : null}
-          data-testid={`wrong-answer-${index}`}
+          data-testid={`wrong-answer-${index}`} name="wrong-answer"
           onClick={this.handleClick} disabled={buttonsDisabled}
         >
           {item}
@@ -137,16 +171,15 @@ class Game extends React.Component {
 
   render() {
     const { results, loading } = this.props;
-    const { indexResults, redirect, tempo } = this.state;
-    if (redirect) return (<Redirect to="/" />); //  mudar para feedback quando tiver ela pronta.
+    const { indexResults, redirect, tempo, visibility } = this.state;
+    if (redirect) return (<Redirect to="/feedback" />);
     if (loading) return (<div>Loading...</div>);
     const { category, question } = results[indexResults];
 
     return (
       <div className="gameScreen">
-        <h4>Game Screen</h4>
         <div className="cardQuestion">
-          {/* <Header /> */}
+          <Header />
           <div className="questionAndAnswers">
             <div className="containerCategoryQuestion">
               <div className="question-category" data-testid="question-category">{category}</div>
@@ -159,7 +192,7 @@ class Game extends React.Component {
           <div className="timeAndNext">
             <div className="timer">Tempo: {tempo} </div>
             <div className="next">
-              <button onClick={this.next} data-testid="btn-next">Próxima</button>
+              <button onClick={this.next} style={{visibility: visibility}} data-testid="btn-next">Próxima</button>
             </div>
           </div>
         </div>
@@ -169,13 +202,18 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  name: state.reducerGravatar.name,
+  email: state.reducerGravatar.email,
   loading: state.reducerTrivia.loading,
   token: state.reducerTrivia.token,
   results: state.reducerTrivia.results,
+  prevAssertions: state.reducerGame.assertions,
+  prevScore: state.reducerGame.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchPerguntas: (token) => dispatch(fetchQuestions(token)),
+  testePoint: (assertions, score) => dispatch(scorePoint(assertions, score)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
 

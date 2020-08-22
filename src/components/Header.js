@@ -5,7 +5,7 @@ import propTypes from 'prop-types';
 import './header.css';
 
 function HEADER(props) {
-  const { hash, name } = props; // incluir o store aqui;
+  const { hash, name, score } = props; // incluir o store aqui;
   return (
     <header className="game-header">
       <div className="left-header">
@@ -14,7 +14,9 @@ function HEADER(props) {
         <p data-testid="header-player-name">Jogador: {name}</p>
       </div>
       <div className="right-header">
-        <h4 data-testid="header-score">Pontos: </h4> {/*colocar aqui o score do redux */}
+        <h4>Pontos:
+          <span data-testid="header-score">{score}</span>
+        </h4>
       </div>
     </header>
   );
@@ -23,7 +25,7 @@ function HEADER(props) {
 const mapStateToProps = (state) => ({
   hash: state.reducerGravatar.hash,
   name: state.reducerGravatar.name,
-  // score: state.reducerGame.score,
+  score: state.reducerGame.score,
 })
 
 export default connect(mapStateToProps)(HEADER);
@@ -31,4 +33,5 @@ export default connect(mapStateToProps)(HEADER);
 HEADER.propTypes = {
   hash: propTypes.string.isRequired,
   name: propTypes.string.isRequired,
+  score: propTypes.number.isRequired,
 }

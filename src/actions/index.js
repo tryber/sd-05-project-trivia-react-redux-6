@@ -5,6 +5,7 @@ export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const FAIL_DATA = 'FAIL_DATA';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
+export const SCORE_POINT = 'SCORE_POINT';
 
 export const requestData = () => ({
   type: REQUEST_DATA,
@@ -52,3 +53,9 @@ export function fetchQuestions(token) {
       );
   };
 }
+
+export const scorePoint = (assertions, score) => ({
+  type: SCORE_POINT,
+  assertions,
+  score,
+});

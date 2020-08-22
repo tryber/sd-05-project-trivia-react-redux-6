@@ -23,13 +23,13 @@ class Login extends React.Component {
   handleClick() {
     const { login, getToken } = this.props;
     const { email, name, hash } = this.state;
-    console.log(email);
-    console.log(name)
     login(email, name, hash);
-    getToken();
-    this.setState({
-      redirect: true,
-    });
+    getToken().then((token) => {
+      localStorage.setItem('token', token.token);
+      this.setState({
+        redirect: true,
+      });
+    })
   }
 
   handleChange(e) {
@@ -44,15 +44,14 @@ class Login extends React.Component {
   }
 
   render() {
-    const { token, setAPIToken } = this.props;
     const { name, email, redirect } = this.state;
     if (redirect) return <Redirect to="/game" />;
     return (
       <div className="App">
-        <Link to="/feedback">Feedback</Link>
-        <Link to="/ranking">Ranking</Link>
         <header className="App-header">
-          <Link to="/settings" data-testid="btn-settings"><img src={img_settings} className="icon_settings" /></Link>
+          <Link to="/settings" data-testid="btn-settings">
+            <img alt="configurações" src={img_settings} className="icon_settings" />
+          </Link>
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <div>
@@ -68,12 +67,16 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  token: state.reducerTrivia.token,
+})
+
 const mapDispatchToProps = (dispatch) => ({
   login: (email, name, hash) => dispatch(loginRequest(email, name, hash)),
   getToken: () => dispatch(fetchToken()),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   login: propTypes.objectOf(propTypes.string).isRequired,
