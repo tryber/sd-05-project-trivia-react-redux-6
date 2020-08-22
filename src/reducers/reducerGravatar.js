@@ -4,7 +4,7 @@ const initialState = {
   email: '',
   name: '',
   hash: '',
-}
+};
 
 export default function reducerGravatar(state = initialState, action) {
   switch (action.type) {

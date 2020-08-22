@@ -5,7 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { loginRequest, fetchToken } from '../actions/index';
 import logo from '../trivia.png';
-import img_settings from '../image/gear.png';
+import imgSettings from '../image/gear.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class Login extends React.Component {
       this.setState({
         redirect: true,
       });
-    })
+    });
   }
 
   handleChange(e) {
@@ -40,7 +40,7 @@ class Login extends React.Component {
     if (id === 'email') {
       const hashState = (md5(value).toString());
       this.setState({ hash: hashState });
-    }
+    };
   }
 
   render() {
@@ -50,16 +50,24 @@ class Login extends React.Component {
       <div className="App">
         <header className="App-header">
           <Link to="/settings" data-testid="btn-settings">
-            <img alt="configurações" src={img_settings} className="icon_settings" />
+            <img alt="configurações" src={imgSettings} className="icon_settings" />
           </Link>
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <div>
             <label htmlFor="email">Email do Gravatar:</label>
-            <input data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange} />
+            <input
+              data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange}
+            />
             <label htmlFor="name">Nome do Jogador:</label>
-            <input data-testid="input-player-name" id="name" type="text" onChange={this.handleChange} />
-            <button data-testid="btn-play" type="button" disabled={!(name && email)} onClick={this.handleClick}>JOGAR!</button>
+            <input
+              data-testid="input-player-name" id="name" type="text" onChange={this.handleChange}
+            />
+            <button
+              data-testid="btn-play" type="button" disabled={!(name && email)} onClick={this.handleClick}
+            >
+              JOGAR!
+            </button>
           </div>
         </header>
       </div>
@@ -69,7 +77,7 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => ({
   token: state.reducerTrivia.token,
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
   login: (email, name, hash) => dispatch(loginRequest(email, name, hash)),
@@ -81,4 +89,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(Login);
 Login.propTypes = {
   login: propTypes.func.isRequired,
   getToken: propTypes.func.isRequired,
-}
+};

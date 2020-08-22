@@ -1,7 +1,8 @@
 import React from 'react';
-import Header from './Header';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import Header from './Header';
 import { fetchQuestions, scorePoint } from '../actions/index';
 import './Game.css';
 
@@ -28,7 +29,7 @@ class Game extends React.Component {
   componentDidMount() {
     const { token, fetchPerguntas } = this.props;
     fetchPerguntas(token);
-    localStorage.setItem('state', JSON.stringify({ player: {score: 0, assertions: 0}}))
+    localStorage.setItem('state', JSON.stringify({ player: { score: 0, assertions: 0 }}));
     // this.timer();
   }
 
@@ -123,12 +124,12 @@ class Game extends React.Component {
   setStorageValue(acertos, placar) {
     const { name, email } = this.props;
     const player = {
-      name: name,
+      name,
       assertions: acertos,
       score: placar,
       gravatarEmail: email,
     };
-    localStorage.setItem('state', JSON.stringify({ player: player }));
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   calculateScore() {
@@ -138,7 +139,7 @@ class Game extends React.Component {
     if (results[indexResults].difficulty === 'hard') difficultyValue = 3;
     if (results[indexResults].difficulty === 'medium') difficultyValue = 2;
     if (results[indexResults].difficulty === 'easy') difficultyValue = 1;
-    const point = 10 + (tempo * difficultyValue );
+    const point = 10 + (tempo * difficultyValue);
     return point;
   }
 
@@ -190,7 +191,9 @@ class Game extends React.Component {
           <div className="timeAndNext">
             <div className="timer">Tempo: {tempo} </div>
             <div className="next">
-              <button onClick={this.next} style={{visibility: visibility}} data-testid="btn-next">Próxima</button>
+              <button onClick={this.next} style={{ visibility }} data-testid="btn-next">
+                Próxima
+              </button>
             </div>
           </div>
         </div>
@@ -213,7 +216,20 @@ const mapDispatchToProps = (dispatch) => ({
   fetchPerguntas: (token) => dispatch(fetchQuestions(token)),
   testePoint: (assertions, score) => dispatch(scorePoint(assertions, score)),
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
+
+Game.propTypes = {
+  name: propTypes.string.isRequired,
+  email: propTypes.string.isRequired,
+  loading: propTypes.bool.isRequired,
+  token: propTypes.string.isRequired,
+  results: propTypes.arrayOf(propTypes.instanceOf(Object)),
+  prevAssertions: propTypes.number.isRequired,
+  prevScore: propTypes.number.isRequired,
+  fetchPerguntas: propTypes.func.isRequired,
+  testePoint: propTypes.func.isRequired,
+};
 
 //  ref1: https://teamtreehouse.com/community/return-mathrandom05
 //  ref2: https://medium.com/better-programming/building-a-simple-countdown-timer-with-react-4ca32763dda7

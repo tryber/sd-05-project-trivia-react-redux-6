@@ -69,7 +69,7 @@ export const savePlayer = (name, email, hash, score) => ({
     email,
     hash,
     score,
-  }
+  },
 });
 
 export const resetScore = () => ({
