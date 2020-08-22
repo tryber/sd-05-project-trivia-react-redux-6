@@ -1,8 +1,9 @@
-import { SCORE_POINT } from "../actions";
+import { SCORE_POINT, SAVE_PLAYER, RESET_SCORE } from "../actions";
 
 const initial_state = {
   assertions: 0,
   score: 0,
+  players: [],
 }
 
 export default function reducerGame(state = initial_state, action) {
@@ -12,6 +13,17 @@ export default function reducerGame(state = initial_state, action) {
         ...state,
         assertions: action.assertions,
         score: action.score,
+      }
+    case SAVE_PLAYER: 
+      return {
+        ...state,
+        players: [...state.players, action.player],
+      }
+    case RESET_SCORE:
+      return {
+        ...state,
+        assertions: action.assertions,
+        score: action.score
       }
     default:
       return state;

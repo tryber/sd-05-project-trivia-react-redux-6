@@ -3,8 +3,19 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import Header from '../components/Header';
+import { savePlayer, resetScore } from '../actions';
 
 class Feedback extends React.Component {
+
+  componentDidMount() {
+    const { name, email, hash, score, saveAndPlay } = this.props;
+    saveAndPlay(name, email, hash, score)
+  }
+
+  componentWillUnmount() {
+    this.props.resetScore();
+  }
+
   render() {
     const { assertions, score } = this.props;
     return (
@@ -15,12 +26,11 @@ class Feedback extends React.Component {
             <div  data-testid="feedback-text">
               {assertions < 3 ? <h3>Podia ser melhor...</h3> : <h3>Mandou bem!</h3>}
             </div>
-            <p> Acertou
-              <span data-testid="feedback-total-question">
+            <p> Acertou <span data-testid="feedback-total-question">
                 {assertions}
               </span> questões!
             </p>
-            <p>Um total de <span data-testid="feedback-total-score">{score}</span> pontos! </p>
+            <p>Um total de <span data-testid="feedback-total-score"> {score}</span> pontos! </p>
             <div>
               <button type="button" data-testid="btn-ranking">
                 <Link to="/ranking">Ver Ranking</Link>
@@ -37,11 +47,19 @@ class Feedback extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  name: state.reducerGravatar.name,
+  email: state.reducerGravatar.email,
+  hash: state.reducerGravatar.hash,
   assertions: state.reducerGame.assertions,
   score: state.reducerGame.score,
 })
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  saveAndPlay: (name, email, hash, score) => dispatch(savePlayer(name, email, hash, score)),
+  resetScore: () => dispatch(resetScore()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
 
 Feedback.propTypes = {
   assertions: propTypes.number.isRequired,

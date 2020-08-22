@@ -28,7 +28,7 @@ class Game extends React.Component {
   componentDidMount() {
     const { token, fetchPerguntas } = this.props;
     fetchPerguntas(token);
-    localStorage.setItem('state', JSON.stringify({ player: {score: 0, asssertions: 0}}))
+    localStorage.setItem('state', JSON.stringify({ player: {score: 0, assertions: 0}}))
     // this.timer();
   }
 
