@@ -41,7 +41,7 @@ class Login extends React.Component {
     if (id === 'email') {
       const hashState = (md5(value).toString());
       this.setState({ hash: hashState });
-    };
+    }
   }
 
   render() {
@@ -58,14 +58,16 @@ class Login extends React.Component {
           <div>
             <label htmlFor="email">Email do Gravatar:</label>
             <input
-              data-testid="input-gravatar-email" id="email" type="email" onChange={this.handleChange}
+              data-testid="input-gravatar-email" id="email"
+              type="email" onChange={this.handleChange}
             />
             <label htmlFor="name">Nome do Jogador:</label>
             <input
               data-testid="input-player-name" id="name" type="text" onChange={this.handleChange}
             />
             <button
-              data-testid="btn-play" type="button" disabled={!(name && email)} onClick={this.handleClick}
+              data-testid="btn-play" type="button"
+              disabled={!(name && email)} onClick={this.handleClick}
             >
               JOGAR!
             </button>

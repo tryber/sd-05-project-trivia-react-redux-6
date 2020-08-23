@@ -12,15 +12,15 @@ class Settings extends React.Component {
         <div>
           <label htmlFor="category_field">Categoria</label>
           <select name="category_field">
-            <option></option>
+            {/* <option></option> */}
           </select>
           <label htmlFor="difficulty_field">Dificuldade</label>
           <select name="difficulty_field">
-            <option></option>
+            {/* <option></option> */}
           </select>
           <label htmlFor="type_field">Tipo</label>
           <select name="type_field">
-            <option></option>
+            {/* <option></option> */}
           </select>
         </div>
 

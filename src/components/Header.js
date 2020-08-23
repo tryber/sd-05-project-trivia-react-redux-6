@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
   hash: state.reducerGravatar.hash,
   name: state.reducerGravatar.name,
   score: state.reducerGame.score,
-})
+});
 
 export default connect(mapStateToProps)(HEADER);
 
@@ -34,4 +34,4 @@ HEADER.propTypes = {
   hash: propTypes.string.isRequired,
   name: propTypes.string.isRequired,
   score: propTypes.number.isRequired,
-}
+};

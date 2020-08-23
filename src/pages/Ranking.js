@@ -7,7 +7,7 @@ class Ranking extends React.Component {
   render() {
     const { players } = this.props; // PROPS QUE VIRÃO DO MAPSTATETOPROPS.
     // ref1
-    const playersInOrder = players.sort((a, b) =>  (a.score < b.score ? 1 : -1));
+    const playersInOrder = players.sort((a, b) => (a.score < b.score ? 1 : -1));
     return (
       <div className="cardScreen">
         <div className="cardQuestion">
@@ -41,7 +41,7 @@ Ranking.propTypes = {
       email: propTypes.string.isRequired,
       hash: propTypes.string.isRequired,
       score: propTypes.number.isRequired,
-    }
+    },
   )).isRequired,
 };
 
