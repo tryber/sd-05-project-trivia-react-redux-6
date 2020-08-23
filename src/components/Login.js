@@ -6,6 +6,7 @@ import propTypes from 'prop-types';
 import { loginRequest, fetchToken } from '../actions/index';
 import logo from '../trivia.png';
 import imgSettings from '../image/gear.png';
+import './login.css';
 
 class Login extends React.Component {
   constructor(props) {

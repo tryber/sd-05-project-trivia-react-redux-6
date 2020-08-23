@@ -33,10 +33,13 @@ export const loginRequest = (email, name, hash) => ({
   hash,
 });
 
-export const receiveToken = (token) => ({
-  type: RECEIVE_TOKEN,
-  token,
-});
+export const receiveToken = (token) => {
+  localStorage.setItem('token', token);
+  return {
+    type: RECEIVE_TOKEN,
+    token,
+  };
+};
 
 export function fetchToken() {
   return (dispatch) => {
