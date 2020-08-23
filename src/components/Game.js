@@ -13,7 +13,7 @@ class Game extends React.Component {
       buttonsDisabled: false,
       indexResults: 0,
       tempo: 30,
-      redirect: false,
+      redirect: false;
       questions: [],
       visibility: 'hidden',
       loading: true,
