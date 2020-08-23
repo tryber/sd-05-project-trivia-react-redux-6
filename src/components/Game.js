@@ -16,6 +16,7 @@ class Game extends React.Component {
       redirect: false,
       questions: [],
       visibility: 'hidden',
+      loading: true,
     };
 
     this.next = this.next.bind(this);
@@ -47,51 +48,15 @@ class Game extends React.Component {
     this.unmountInterval();
   }
 
-  unmountInterval() {
-    clearInterval(this.myInterval);
-    this.setState({ buttonsDisabled: true });
-  }
-
-  updateQuestions() {
-    const { results } = this.props;
-    if (results !== undefined) {
-      this.setState({
-        questions: this.randomicChoices(),
-        tempo: 30,
-      });
-    }
-    this.timer();
-  }
-
-  randomicChoices() {
-    const { indexResults } = this.state;
-    const { type } = this.props.results[indexResults];
-    let arrayRandomico;
-    if (type === 'boolean') {
-      arrayRandomico = ['True', 'False'];
-    } else {
-      arrayRandomico = [this.props.results[indexResults].correct_answer,
-        ...this.props.results[indexResults].incorrect_answers];
-    }
-    return arrayRandomico.sort(() => Math.random() - 0.5); // ref1
-  }
-
-  next() {
-    const { indexResults } = this.state;
-    const { results } = this.props;
-
-    this.setState({
-      indexResults: indexResults + 1,
-      buttonsDisabled: false,
-    });
-
-    if (indexResults === results.length - 1) {
-      this.setState({
-        redirect: true,
-        indexResults: 0,
-      });
-    }
-
+  setStorageValue(acertos, placar) {
+    const { name, email } = this.props;
+    const player = {
+      name,
+      assertions: acertos,
+      score: placar,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   handleClick(event) {
@@ -112,15 +77,54 @@ class Game extends React.Component {
     this.unmountInterval();
   }
 
-  setStorageValue(acertos, placar) {
-    const { name, email } = this.props;
-    const player = {
-      name,
-      assertions: acertos,
-      score: placar,
-      gravatarEmail: email,
-    };
-    localStorage.setItem('state', JSON.stringify({ player }));
+  next() {
+    const { indexResults } = this.state;
+    const { results } = this.props;
+
+    this.setState({
+      indexResults: indexResults + 1,
+      buttonsDisabled: false,
+    });
+
+    if (indexResults === results.length - 1) {
+      this.setState({
+        redirect: true,
+      });
+    }
+  }
+
+  randomicChoices() {
+    const { indexResults } = this.state;
+    const { type } = this.props.results[indexResults];
+    let arrayRandomico;
+    if (type === 'boolean') {
+      arrayRandomico = ['True', 'False'];
+    } else {
+      arrayRandomico = [this.props.results[indexResults].correct_answer,
+        ...this.props.results[indexResults].incorrect_answers];
+    }
+    return arrayRandomico.sort(() => Math.random() - 0.5); // ref1
+  }
+
+  updateQuestions() {
+    const { results } = this.props;
+    if (results !== undefined) {
+      this.setState({
+        questions: this.randomicChoices(),
+        tempo: 30,
+        visibility: 'hidden',
+        loading: false,
+      });
+    }
+    this.timer();
+  }
+
+  unmountInterval() {
+    clearInterval(this.myInterval);
+    this.setState({
+      buttonsDisabled: true,
+      visibility: 'visible',
+    });
   }
 
   timer() {
@@ -173,7 +177,8 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, loading } = this.props;
+    const { results } = this.props;
+    const { loading } = this.state;
     const { indexResults, redirect, tempo, visibility } = this.state;
     if (redirect) return (<Redirect to="/feedback" />);
     if (loading) return (<div>Loading...</div>);
@@ -207,7 +212,6 @@ class Game extends React.Component {
 const mapStateToProps = (state) => ({
   name: state.reducerGravatar.name,
   email: state.reducerGravatar.email,
-  loading: state.reducerTrivia.loading,
   token: state.reducerTrivia.token,
   results: state.reducerTrivia.results,
   prevAssertions: state.reducerGame.assertions,
@@ -224,7 +228,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Game);
 Game.propTypes = {
   name: propTypes.string.isRequired,
   email: propTypes.string.isRequired,
-  loading: propTypes.bool.isRequired,
   token: propTypes.string.isRequired,
   results: propTypes.arrayOf(propTypes.instanceOf(Object)).isRequired,
   prevAssertions: propTypes.number.isRequired,

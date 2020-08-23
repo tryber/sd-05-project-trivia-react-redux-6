@@ -27,7 +27,7 @@ export default function reducerTrivia(state = INITIAL_STATE, action) {
         error: action.error,
       };
     case RECEIVE_TOKEN:
-      return {...state, token: action.token};
+      return { ...state, token: action.token };
     default:
       return state;
   }
