@@ -88,8 +88,10 @@ class Game extends React.Component {
     if (indexResults === results.length - 1) {
       this.setState({
         redirect: true,
+        indexResults: 0,
       });
     }
+
   }
 
   handleClick(event) {
