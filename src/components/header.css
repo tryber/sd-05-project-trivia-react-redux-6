@@ -1,0 +1,41 @@
+:root {
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+}
+
+.game-header {
+  align-items: center;
+  background: #c4c4c4;
+  display: flex;
+  font-size: 0.8rem;
+  height: 5vh;
+  justify-content: space-around;
+  margin-bottom: 1.5em;
+  width: 100%;
+}
+
+.game-header .left-header {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-grow: 2;
+  justify-content: flex-start;
+  padding: 1em;
+}
+
+.game-header .left-header img {
+  border-radius: 50%;
+  height: 20px;
+  padding: 1em;
+  width: 20px;
+}
+
+.game-header .right-header {
+  min-width: 10%;
+  padding: 1em;
+}
+
+.icon_settings {
+  width: 30px;
+}

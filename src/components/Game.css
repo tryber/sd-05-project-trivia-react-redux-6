@@ -1,0 +1,60 @@
+.gameScreen {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 20vh auto;
+}
+
+.cardQuestion {
+  border: 1px solid black;
+  padding: 10px;
+  width: 400px;
+}
+
+.questionAndAnswers {
+  display: flex;
+  flex-direction: row;
+}
+
+.containerCategoryQuestion {
+  background-color: #a6aab4;
+  padding: 3px;
+  width: 200px;
+}
+
+.answers {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+  width: 210px;
+}
+
+.question-category {
+  background-color: lightgray;
+}
+
+.correctAnswer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrongAnswer {
+  border: 3px solid rgb(255, 0, 0);
+}
+
+.timeAndNext {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.timer {
+  width: 200px;
+}
+
+.next {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
