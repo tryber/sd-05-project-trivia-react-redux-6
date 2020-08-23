@@ -6,6 +6,7 @@ import propTypes from 'prop-types';
 import { loginRequest, fetchToken } from '../actions/index';
 import logo from '../trivia.png';
 import img_settings from '../image/gear.png';
+import './login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -52,7 +53,9 @@ class Login extends React.Component {
         <Link to="/feedback">Feedback</Link>
         <Link to="/ranking">Ranking</Link>
         <header className="App-header">
-          <Link to="/settings" data-testid="btn-settings"><img src={img_settings} className="icon_settings" /></Link>
+          <div className="tagLink">
+            <Link to="/settings" data-testid="btn-settings"><img src={img_settings} className="icon_settings" /></Link>
+          </div>
           <img src={logo} className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <div>
