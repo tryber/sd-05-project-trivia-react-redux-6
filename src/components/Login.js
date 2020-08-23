@@ -3,7 +3,7 @@ import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import propTypes from 'prop-types';
-import { loginRequest, fetchToken } from '../actions/index';
+import { loginRequest, fetchToken, requestData } from '../actions/index';
 import logo from '../trivia.png';
 import imgSettings from '../image/gear.png';
 
@@ -19,7 +19,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
-
+ 
   handleClick() {
     const { login, getToken } = this.props;
     const { email, name, hash } = this.state;
