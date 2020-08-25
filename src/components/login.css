@@ -1,0 +1,11 @@
+.icon_settings {
+  width: 20px;
+}
+
+.tagLink {
+  display: flex;
+  height: 100px;
+  justify-content: flex-end;
+  margin-left: 100px;
+  width: 50%;
+}
