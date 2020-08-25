@@ -6,6 +6,12 @@ import Header from './Header';
 import { fetchQuestions, scorePoint } from '../actions/index';
 import './Game.css';
 
+function decodeHtml(html) {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = html;
+  return txt.value;
+}
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -160,7 +166,7 @@ class Game extends React.Component {
             key={item} className={(buttonsDisabled === true) ? 'correctAnswer' : null} data-testid="correct-answer" name="correct-answer"
             onClick={this.handleClick} disabled={buttonsDisabled}
           >
-            {item}
+            {decodeHtml(item)}
           </button>
         );
       }
@@ -170,7 +176,7 @@ class Game extends React.Component {
           data-testid={`wrong-answer-${index}`} name="wrong-answer"
           onClick={this.handleClick} disabled={buttonsDisabled}
         >
-          {item}
+          {decodeHtml(item)}
         </button>
       );
     });
@@ -190,8 +196,10 @@ class Game extends React.Component {
           <Header />
           <div className="questionAndAnswers">
             <div className="containerCategoryQuestion">
-              <div className="question-category" data-testid="question-category">{category}</div>
-              <p className="question-text" data-testid="question-text">{question}</p>
+              <div className="question-category" data-testid="question-category">
+                {decodeHtml(category)}
+              </div>
+              <p className="question-text" data-testid="question-text">{decodeHtml(question)}</p>
             </div>
             <div className="answers">{this.renderQuestions()}</div>
           </div>
@@ -240,3 +248,8 @@ Game.propTypes = {
 //  ref2: https://medium.com/better-programming/building-a-simple-countdown-timer-with-react-4ca32763dda7
 //  ref2: https://www.youtube.com/watch?v=NAx76xx40jM
 //  ref2: https://www.w3schools.com/jsref/met_win_setinterval.asp
+//  ref3: https://stackoverflow.com/questions/5796718/html-entity-decode
+
+//  não é necessário criar o elemento com React.createElement já que ele nunca é inserido na página:
+//  ref: https://pt-br.reactjs.org/docs/react-api.html
+//  https://symfonycasts.com/screencast/reactjs/react-create-element

@@ -16,7 +16,7 @@ class Ranking extends React.Component {
           </button>
           <h3 data-testid="ranking-title">Ranking</h3>
           {playersInOrder.map((player, index) => (
-            <div>
+            <div key={player.name}>
               <img alt="gravatar do jogador" src={`https://www.gravatar.com/avatar/${player.hash}`} />
               <h5 data-testid={`player-name-${index}`} >{player.name}</h5>
               <h5 data-testid={`player-score-${index}`} >Score: {player.score} </h5>
